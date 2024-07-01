@@ -1,0 +1,48 @@
+services: 
+
+  nats:
+    image: nats:latest
+    container_name: nats-server
+    ports:
+      - "4222:4222"
+
+  api_gatway:
+    build: ./http-api-gatway
+    container_name: http-api-gatway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./http-api-gatway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+  
+  users-microservice:
+    build: ./users-microservice
+    container_name: users-microservice
+    volumes:
+      - ./users-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - mongo
+    environment:
+      - JWT_SECRET=secret
+  
+  payments-microservice:
+    build: ./payments-microservice
+    container_name: payments-microservice
+    volumes:
+      - ./payments-microservice/src:/usr/src/app/src
+    command: npm run start:dev
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    attach: false
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
