@@ -1,8 +1,10 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { hash } from "bcrypt";
 import { Document } from "mongoose";
 
 @Schema({
-    timestamps: true
+    timestamps: true,
+
 })
 export class User extends Document {
 
@@ -17,6 +19,8 @@ export class User extends Document {
 
     @Prop({ type: String, required: false })
     avatar?: string;
+
+
 
 }
 

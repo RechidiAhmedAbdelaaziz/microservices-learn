@@ -12,10 +12,7 @@ async function bootstrap() {
     }
   })
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted : true,
-  }))
+  app.useGlobalPipes(new ValidationPipe())
 
   await app.listen().catch((err) => console.error(err)).then(() => {
     console.log('Users microservice is listening');

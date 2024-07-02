@@ -14,4 +14,11 @@ export class AuthMicroserviceController {
     ) {
         return await this.authService.signUp(data);
     }
+
+    @MessagePattern({ cmd: 'login' })
+    async login(
+        @Payload() data: any
+    ) {
+        return await this.authService.login(data);
+    }
 }
